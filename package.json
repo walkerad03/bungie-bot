@@ -1,0 +1,18 @@
+{
+  "name": "depresstiny_bot",
+  "version": "1.0.0",
+  "description": "A bot for the Depresstiny server. Keeps track of impressive activity clears like lowman raids and solo dungeons. Also announces things like weekly pinnacle rewards. Bot will automatically add roles based on lowman and solo clears.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Walker Davis",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "node-fetch": "^3.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.35.0"
+  }
+}
