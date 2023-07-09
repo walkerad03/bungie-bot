@@ -21,7 +21,7 @@ jobs:
           script: |
             cd bungie-bot
             git pull origin main
-                        
+
       - name: Rebuild Docker Container and Start
         uses: appleboy/ssh-action@master
         with:
