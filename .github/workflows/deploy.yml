@@ -19,4 +19,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd bungie-bot && git pull origin main && node index.main
+            cd bungie-bot
+            git pull origin main
+            docker build -t bungie-bot .
+            docker run bungie-bot
