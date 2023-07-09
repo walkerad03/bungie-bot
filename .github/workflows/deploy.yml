@@ -21,12 +21,7 @@ jobs:
           script: |
             cd bungie-bot
             git pull origin main
-            
-      - name: Copy Secret config
-        run: |
-          cat ${{ secrets.SECRET_CONFIG }} > config.json
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} config.json ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/bungie-bot/
-            
+                        
       - name: Rebuild Docker Container and Start
         uses: appleboy/ssh-action@master
         with:
