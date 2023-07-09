@@ -2,7 +2,7 @@ name: Deploy to Ubuntu Server
 
 on:
   workflow_run:
-    workflows: ["Node.js CI"]
+    workflows: ["Node.js Test"]
     branches:
       - main
     types:
