@@ -8,7 +8,7 @@ const HEADERS = {"X-API-KEY": bungieAPIKey};
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('update-roles')
-		.setDescription('Applies roles based on high-level achievements such as lowman raids, solo dungeons, and other shit'),
+		.setDescription('Applies roles based on low-man raid completions. BROKEN!'),
 	async execute(interaction) {
 		await interaction.deferReply({ephemeral: true});
 
@@ -54,7 +54,7 @@ module.exports = {
 		}
 
 		await interaction.editReply(str);
-
+		/*
 		if ("3_Vault of Glass: Normal" in completion_counts) {
 			
 			// TODO: Add role assignments.
@@ -66,6 +66,7 @@ module.exports = {
 			await member.roles.add(role);
 			await interaction.followUp({content: "Added Trio VoG Role!", ephemeral: true});
 		}
+		*/
 	},
 };
 
