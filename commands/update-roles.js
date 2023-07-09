@@ -12,7 +12,9 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply({ephemeral: true});
 
-		const username = interaction.member.nickname;
+		const guild = interaction.guild;
+		const member = interaction.member;
+		const username = member.nickname;
 
 		await interaction.editReply("Finding destiny membership...");
 
@@ -56,7 +58,12 @@ module.exports = {
 		if ("3_Vault of Glass: Normal" in completion_counts) {
 			
 			// TODO: Add role assignments.
+			const roleName = interaction.options.getString('Trio Vog');
+			const role = guild.roles.cache.find(role => role.name === roleName);
 
+			await console.log(role);
+
+			await member.roles.add(role);
 			await interaction.followUp({content: "Added Trio VoG Role!", ephemeral: true});
 		}
 	},
