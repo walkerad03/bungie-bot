@@ -21,5 +21,7 @@ jobs:
           script: |
             cd bungie-bot
             git pull origin main
+            docker stop bungie-bot || true
+            docker rm bungie-bot || true
             docker build -t bungie-bot .
-            docker run bungie-bot
+            docker run -d --name bungie-bot bungie-bot
