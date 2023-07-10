@@ -1,9 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 axios = require('axios');
 const utils = require('../utils');
-
-const {bungieAPIKey} = require('../config.json');
-const HEADERS = {"X-API-KEY": bungieAPIKey};
+const logger = require('../logger')
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,9 +10,10 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply({ephemeral: true});
 
-		const guild = interaction.guild;
 		const member = interaction.member;
 		const username = member.nickname;
+
+		logger.logInfo(`Finding lowmans for ${username}`);
 
 		await interaction.editReply("Finding destiny membership...");
 
@@ -54,19 +53,6 @@ module.exports = {
 		}
 
 		await interaction.editReply(str);
-		/*
-		if ("3_Vault of Glass: Normal" in completion_counts) {
-			
-			// TODO: Add role assignments.
-			const roleName = interaction.options.getString('Trio Vog');
-			const role = guild.roles.cache.find(role => role.name === roleName);
-
-			await console.log(role);
-
-			await member.roles.add(role);
-			await interaction.followUp({content: "Added Trio VoG Role!", ephemeral: true});
-		}
-		*/
 	},
 };
 
