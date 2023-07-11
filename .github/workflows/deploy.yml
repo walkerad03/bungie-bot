@@ -29,6 +29,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            cd bungie-bot
             docker stop bungie-bot || true
             docker rm bungie-bot || true
             docker build -t bungie-bot .

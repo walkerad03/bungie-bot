@@ -5,7 +5,7 @@ const utils = require('../utils');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('return-membership')
-		.setDescription('Spits out membership details (hopefully)'),
+		.setDescription('Spits out membership details (for dev purposes)'),
 	async execute(interaction) {
 		await interaction.deferReply();
 
