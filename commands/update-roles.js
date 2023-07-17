@@ -1,16 +1,24 @@
 const { SlashCommandBuilder } = require('discord.js');
 axios = require('axios');
 const utils = require('../utils');
-const logger = require('../logger')
+const logger = require('../modules/logger');
+const discord_module = require('../modules/discord');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('update-roles')
-		.setDescription('Applies roles based on low-man raid completions. BROKEN!'),
+		.setDescription('Applies roles based on low-man raid completions. BROKEN!')
+		.addUserOption((option) =>
+			option
+				.setName('target')
+				.setDescription('User to apply roles to')
+				.setRequired(true)
+		),
 	async execute(interaction) {
 		await interaction.deferReply({ephemeral: true});
 
-		const member = interaction.member;
+		const target = interaction.options.getUser('target');
+		const member = interaction.guild.members.cache.get(target.id);
 		const username = member.nickname;
 
 		logger.logInfo(`Finding lowmans for ${username}`);
@@ -52,7 +60,32 @@ module.exports = {
 			str += key + ': ' + completion_counts[key] + '\n';
 		}
 
-		await interaction.editReply(str);
+		if (str.includes("3_Garden of Salvation")) {
+			discord_module.set_role(member, "Trio GoS");
+		}
+		if (str.includes("3_Deep Stone Crypt")) {
+			discord_module.set_role(member, "Trio DSC");
+		}
+		if (str.includes("3_Vault of Glass: Normal")) {
+			discord_module.set_role(member, "Trio VoG");
+		}
+		if (str.includes("3_Root of Nightmares: Normal")) {
+			discord_module.set_role(member, "Trio RoN");
+		}
+		if (str.includes("3_King's Fall: Normal")) {
+			discord_module.set_role(member, "Trio KF");
+		}
+		if (str.includes("3_Vow of the Disciple: Normal")) {
+			discord_module.set_role(member, "Trio VotD");
+		}
+		if (str.includes("2_King's Fall: Normal")) {
+			discord_module.set_role(member, "Duo KF");
+		}
+		if (str.includes("2_Deep Stone Crypt")) {
+			discord_module.set_role(member, "Duo DSC");
+		}
+
+		await interaction.editReply(`Clears:\n${str}`);
 	},
 };
 

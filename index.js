@@ -2,11 +2,19 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { token } = require('./config.json');
-const logger = require('./logger')
+const { token, guildId } = require('./config.json');
+const logger = require('./modules/logger');
+const utils = require('./utils.js');
+const { role_refresh } = require('./modules/destiny/role_refresh');
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+    intents:[
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildPresences
+    ]
+});
 
 client.commands = new Collection();
 
@@ -23,10 +31,30 @@ for (const file of commandFiles) {
         logger.logWarn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
     }
 }
+
+async function set_activities() {
+    const guild = client.guilds.cache.get(guildId);
+    guild.members.cache.each(member => {
+        const nickname = member.nickname ?? member.user.username;
+        const regex_pattern = /^[^#]+#\d+$/;
+        if (nickname === "shy#8600") {
+            console.log("skipping shy");
+        }
+        else if (regex_pattern.test(nickname)) {
+            utils.get_latest_activity(member);
+            role_refresh(member);
+        }
+    });
+}
+
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, c => {
 	logger.logInfo(`Ready! Logged in as ${c.user.tag}`);
+
+    set_activities();
+
+    setInterval(set_activities, 60 * 60 * 1000);
 });
 
 client.on(Events.InteractionCreate, async interaction => {

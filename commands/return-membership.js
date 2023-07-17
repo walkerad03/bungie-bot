@@ -7,12 +7,12 @@ module.exports = {
 		.setName('return-membership')
 		.setDescription('Spits out membership details (for dev purposes)'),
 	async execute(interaction) {
-		await interaction.deferReply();
+		await interaction.deferReply({ephemeral: true});
 
         const nickname = interaction.member.nickname;
 
-        utils.get_membership_by_username(nickname).then(membership_details => {
-            interaction.editReply(`Membership ID: ${membership_details[0].membershipId}\nMembership Type: ${membership_details[0].membershipType}`);
-        });
+        membership_details = await utils.get_membership_by_username(nickname)
+		
+		interaction.editReply(`Membership ID: ${membership_details[0].membershipId}\nMembership Type: ${membership_details[0].membershipType}`);
 	},
 };
