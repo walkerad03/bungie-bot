@@ -4,6 +4,12 @@ const utils = require('../utils');
 const logger = require('../modules/logger');
 const discord_module = require('../modules/discord');
 
+_check_exists = function (str, search, member, role) {
+    if (str.includes(search)) {
+        discord_module.set_role(member, role);
+    }
+}
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('update-roles')
@@ -60,30 +66,27 @@ module.exports = {
 			str += key + ': ' + completion_counts[key] + '\n';
 		}
 
-		if (str.includes("3_Garden of Salvation")) {
-			discord_module.set_role(member, "Trio GoS");
-		}
-		if (str.includes("3_Deep Stone Crypt")) {
-			discord_module.set_role(member, "Trio DSC");
-		}
-		if (str.includes("3_Vault of Glass: Normal")) {
-			discord_module.set_role(member, "Trio VoG");
-		}
-		if (str.includes("3_Root of Nightmares: Normal")) {
-			discord_module.set_role(member, "Trio RoN");
-		}
-		if (str.includes("3_King's Fall: Normal")) {
-			discord_module.set_role(member, "Trio KF");
-		}
-		if (str.includes("3_Vow of the Disciple: Normal")) {
-			discord_module.set_role(member, "Trio VotD");
-		}
-		if (str.includes("2_King's Fall: Normal")) {
-			discord_module.set_role(member, "Duo KF");
-		}
-		if (str.includes("2_Deep Stone Crypt")) {
-			discord_module.set_role(member, "Duo DSC");
-		}
+		_check_exists(str, "3_Last Wish", member, "Trio LW");
+        _check_exists(str, "3_Garden of Salvation", member, "Trio GoS");
+        _check_exists(str, "2_Garden of Salvation", member, "Duo GoS");
+        _check_exists(str, "3_Deep Stone Crypt", member, "Trio DSC");
+        _check_exists(str, "2_Deep Stone Crypt", member, "Duo DSC");
+        _check_exists(str, "3_Vault of Glass: Normal", member, "Trio VoG");
+        _check_exists(str, "2_Vault of Glass: Normal", member, "Duo VoG");
+        _check_exists(str, "3_Vault of Glass: Master", member, "Trio VoG: Master");
+        _check_exists(str, "2_Vault of Glass: Master", member, "Duo VoG: Master");
+        _check_exists(str, "3_Vow of the Disciple: Normal", member, "Trio VotD");
+        _check_exists(str, "3_Vow of the Disciple: Master", member, "Trio VotD: Master");
+        _check_exists(str, "3_King's Fall: Normal", member, "Trio KF");
+        _check_exists(str, "2_King's Fall: Normal", member, "Duo KF");
+        _check_exists(str, "3_King's Fall: Master", member, "Trio KF: Master");
+        _check_exists(str, "2_King's Fall: Master", member, "Duo KF: Master");
+        _check_exists(str, "3_Root of Nightmares: Normal", member, "Trio RoN");
+        _check_exists(str, "2_Root of Nightmares: Normal", member, "Duo RoN");
+        _check_exists(str, "1_Root of Nightmares: Normal", member, "Solo RoN");
+        _check_exists(str, "3_Root of Nightmares: Master", member, "Trio RoN: Master");
+        _check_exists(str, "2_Root of Nightmares: Master", member, "Duo RoN: Master");
+        _check_exists(str, "1_Root of Nightmares: Master", member, "Solo RoN: Master");
 
 		await interaction.editReply(`Clears:\n${str}`);
 	},
