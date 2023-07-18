@@ -38,7 +38,7 @@ async function set_activities() {
         const nickname = member.nickname ?? member.user.username;
         const regex_pattern = /^[^#]+#\d+$/;
         if (nickname === "shy#8600") {
-            console.log("skipping shy");
+            
         }
         else if (regex_pattern.test(nickname)) {
             utils.get_latest_activity(member);
@@ -54,7 +54,7 @@ client.once(Events.ClientReady, c => {
 
     set_activities();
 
-    setInterval(set_activities, 5 * 60 * 1000);
+    setInterval(set_activities, 30 * 60 * 1000);
 });
 
 client.on(Events.InteractionCreate, async interaction => {
