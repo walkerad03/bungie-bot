@@ -12,17 +12,8 @@ module.exports = {
             const membership_id = mem_details[0].membershipId;
 
             const data = await destiny.api_get(
-                `/Platform/Destiny2/${membership_type}/Profile/${membership_id}/?components=100,204`,
+                `/Platform/Destiny2/${membership_type}/Profile/${membership_id}/?components=100`,
             );
-
-            const is_currently_offline = Object.values(data.characterActivities.data)
-                .every(activity => activity.hasOwnProperty('currentActivityHash') && activity.currentActivityHash === 0);
-
-            if (is_currently_offline) {
-                discord_module.remove_role(member, "In Game");
-            } else {
-                discord_module.set_role(member, "In Game");
-            }
 
             const date_last_played = new Date(data.profile.data.dateLastPlayed);
             var current_date = new Date()
