@@ -28,9 +28,9 @@ module.exports = {
             var current_date = new Date()
             const time_since_played = (current_date - date_last_played) / (1000 * 86400);
             if (time_since_played < 7) {
-                discord_module.set_role(member, "Active");
+                discord_module.set_role(member, "In Game");
             } else {
-                discord_module.remove_role(member, "Active");
+                discord_module.remove_role(member, "In Game");
             }
         } catch (error) {
             logger.logWarn(`Failed time check for ${username}`);
