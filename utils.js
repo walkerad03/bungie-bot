@@ -19,18 +19,18 @@ module.exports = {
                 .every(activity => activity.currentActivityHash === 0);
 
             if (is_currently_offline) {
-                discord_module.remove_role(member, "Online");
+                discord_module.remove_role(member, "In Game");
             } else {
-                discord_module.set_role(member, "Online");
+                discord_module.set_role(member, "In Game");
             }
 
             const date_last_played = new Date(data.profile.data.dateLastPlayed);
             var current_date = new Date()
             const time_since_played = (current_date - date_last_played) / (1000 * 86400);
             if (time_since_played < 7) {
-                discord_module.set_role(member, "In Game");
+                discord_module.set_role(member, "Active");
             } else {
-                discord_module.remove_role(member, "In Game");
+                discord_module.remove_role(member, "Active");
             }
         } catch (error) {
             logger.logWarn(`Failed time check for ${username}`);
