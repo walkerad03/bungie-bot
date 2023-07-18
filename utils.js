@@ -16,7 +16,7 @@ module.exports = {
             );
 
             const is_currently_offline = Object.values(data.characterActivities.data)
-                .every(activity => activity.currentActivityHash === 0);
+                .every(activity => activity.hasOwnProperty('currentActivityHash') && activity.currentActivityHash === 0);
 
             if (is_currently_offline) {
                 discord_module.remove_role(member, "In Game");

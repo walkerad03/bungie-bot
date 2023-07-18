@@ -1,6 +1,6 @@
 {
   "name": "depresstiny_bot",
-  "version": "1.0.0",
+  "version": "0.1",
   "description": "A bot for the Depresstiny server. Keeps track of impressive activity clears like lowman raids and solo dungeons. Also announces things like weekly pinnacle rewards. Bot will automatically add roles based on lowman and solo clears.",
   "main": "index.js",
   "scripts": {
