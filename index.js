@@ -54,7 +54,7 @@ client.once(Events.ClientReady, c => {
 
     set_activities();
 
-    setInterval(set_activities, 60 * 60 * 1000);
+    setInterval(set_activities, 5 * 60 * 1000);
 });
 
 client.on(Events.InteractionCreate, async interaction => {

@@ -68,7 +68,6 @@ module.exports = {
 
 		_check_exists(str, "3_Last Wish", member, "Trio LW");
         _check_exists(str, "3_Garden of Salvation", member, "Trio GoS");
-        _check_exists(str, "2_Garden of Salvation", member, "Duo GoS");
         _check_exists(str, "3_Deep Stone Crypt", member, "Trio DSC");
         _check_exists(str, "2_Deep Stone Crypt", member, "Duo DSC");
         _check_exists(str, "3_Vault of Glass: Normal", member, "Trio VoG");

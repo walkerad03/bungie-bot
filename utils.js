@@ -20,6 +20,11 @@ module.exports = {
             const time_since_played = (current_date - date_last_played) / (1000 * 86400);
             if (time_since_played < 7) {
                 discord_module.set_role(member, "Active");
+                if (time_since_played < 0.006944444) {
+                    discord_module.set_role(member, "Online");
+                } else {
+                    discord_module.remove_role(member, "Online");
+                }
             } else {
                 discord_module.remove_role(member, "Active");
             }
