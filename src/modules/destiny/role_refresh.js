@@ -18,14 +18,14 @@ function _checkExists(str, search, member, role) {
 
 module.exports = {
   async roleRefresh(member) {
-    const username = member.nickname;
+    const username = member.nickname ?? member.user.username;
 
     const membershipDetails = await utils.getMembershipByUsername(username);
 
     const membershipType = membershipDetails[0].membershipType;
     const membershipId = membershipDetails[0].membershipId;
 
-    const chars = await utils.getMembershipByUsername(membershipType, membershipId);
+    const chars = await utils.getCharactersByMembership(membershipType, membershipId);
 
     const lowmans = [];
 

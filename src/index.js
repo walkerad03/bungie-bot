@@ -1,11 +1,11 @@
 // Require the necessary discord.js classes
 const fs = require('node:fs');
 const path = require('node:path');
-const {Client, Collection, Events, GatewayIntentBits} = require('discord.js');
+const {Client, Collection, Events, GatewayIntentBits, ActivityType} = require('discord.js');
 const {token, guildId} = require('../config.json');
-const logger = require('../modules/logger');
-const utils = require('../utils.js');
-const {roleRefresh} = require('../modules/destiny/role_refresh');
+const logger = require('./modules/logger');
+const utils = require('./utils.js');
+const {roleRefresh} = require('./modules/destiny/role_refresh');
 
 // Create a new client instance
 const client = new Client({
@@ -15,22 +15,6 @@ const client = new Client({
     GatewayIntentBits.GuildPresences,
   ],
 });
-
-client.commands = new Collection();
-
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-  const filePath = path.join(commandsPath, file);
-  const command = require(filePath);
-
-  if ('data' in command && 'execute' in command) {
-    client.commands.set(command.data.name, command);
-  } else {
-    logger.logWarn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
-  }
-}
 
 /**
  * set roles for all server members.
@@ -52,12 +36,26 @@ async function setActivities() {
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already
 // defined 'client'
-client.once(Events.ClientReady, (c) => {
+client.once('ready', (c) => {
   logger.logInfo(`Ready! Logged in as ${c.user.tag}`);
 
   setActivities();
 
   setInterval(setActivities, 30 * 60 * 1000);
+  client.user.setActivity('you.', {type: ActivityType.Watching});
+  client.user.setStatus('online');
+});
+
+client.on('error', function(msg) {
+  logger.logError(msg);
+});
+
+client.on('warn', function(msg) {
+  logger.logWarn(msg);
+});
+
+client.on('debug', function(msg) {
+  logger.logDebug(msg);
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
@@ -88,5 +86,33 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 });
 
-// Log in to Discord with your client's token
-client.login(token);
+/**
+ * initializes the discord bot.
+ */
+function init() {
+  client.commands = new Collection();
+
+  const commandsPath = path.join(__dirname, 'commands');
+  const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.js'));
+
+  for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = require(filePath);
+
+    if ('data' in command && 'execute' in command) {
+      client.commands.set(command.data.name, command);
+    } else {
+      logger.logWarn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
+    }
+  }
+}
+
+/**
+ * connect bot to discord server.
+ */
+function login() {
+  client.login(token);
+}
+
+module.exports.init = init;
+module.exports.login = login;

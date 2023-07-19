@@ -1,5 +1,5 @@
 const logger = require('../logger');
-const {bungieAPIKey} = require('../../config.json');
+const {bungieAPIKey} = require('../../../config.json');
 const HEADERS = {'X-API-KEY': bungieAPIKey};
 
 /**
@@ -144,7 +144,7 @@ module.exports = {
    * @return {JSON} json data containing list of activities.
    */
   getActivityHistory: async function(characterId, membershipId, membershipType, count, mode, page) {
-    return await destiny.api_get(
+    return await _apiGet(
         `/Platform/Destiny2/${membershipType}/Account/${membershipId}/Character/${characterId}/Stats/Activities/?page=${page}&mode=${mode}&count=${count}`,
     );
   },

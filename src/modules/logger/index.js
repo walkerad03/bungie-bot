@@ -10,4 +10,8 @@ module.exports = {
   logWarn: function(message) {
     console.warn(`[WARN] ${message}`);
   },
+
+  logDebug: function(message) {
+    console.debug(`[DEBUG] ${message}`);
+  },
 };
