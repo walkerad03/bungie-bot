@@ -6,7 +6,7 @@ const discord_module = require('../modules/discord');
 
 _check_exists = function (str, search, member, role) {
     if (str.includes(search)) {
-        discord_module.set_role(member, role);
+        discord_module.setRole(member, role);
     }
 }
 
@@ -31,39 +31,39 @@ module.exports = {
 
 		await interaction.editReply("Finding destiny membership...");
 
-		const membership_details = await utils.get_membership_by_username(username);
+		const membershipDetails = await utils.getMembershipByUsername(username);
 
-		const membership_type = membership_details[0].membershipType;
-		const membership_id = membership_details[0].membershipId;
+		const membershipType = membershipDetails[0].membershipType;
+		const membershipId = membershipDetails[0].membershipId;
 
 		await interaction.editReply("Pulling characters...");
 
-		const chars = await utils.get_characters_by_membership(membership_type, membership_id);
+		const chars = await utils.getCharactersByMembership(membershipType, membershipId);
 
 		var lowmans = [];
 
 		for (idx in chars) {
 			await interaction.editReply(`Finding valid lowman completions for each character... (${idx}/${chars.length})`);
-			const lowmans_for_char = await utils.get_completed_lowman_raids_by_character(membership_type, membership_id, chars[idx]);
+			const lowmansForChar = await utils.getCompletedLowmanRaidsByCharacter(membershipType, membershipId, chars[idx]);
 
-			lowmans.push(lowmans_for_char);
+			lowmans.push(lowmansForChar);
 		}
 
-		completion_counts = {}
+		let completionCounts = {}
 
 		for (i in lowmans) {
 			for (let raid of lowmans[i]) {
-				if (`${raid.fireteamSize}_${raid.name}` in completion_counts){
-					completion_counts[`${raid.fireteamSize}_${raid.name}`] ++;
+				if (`${raid.fireteamSize}_${raid.name}` in completionCounts){
+					completionCounts[`${raid.fireteamSize}_${raid.name}`] ++;
 				} else {
-					completion_counts[`${raid.fireteamSize}_${raid.name}`] = 1;
+					completionCounts[`${raid.fireteamSize}_${raid.name}`] = 1;
 				}
 			}
 		}
 
 		let str = '';
-		for (let key in completion_counts) {
-			str += key + ': ' + completion_counts[key] + '\n';
+		for (let key in completionCounts) {
+			str += key + ': ' + completionCounts[key] + '\n';
 		}
 
 		_check_exists(str, "3_Last Wish", member, "Trio LW");

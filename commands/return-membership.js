@@ -11,8 +11,8 @@ module.exports = {
 
         const nickname = interaction.member.nickname;
 
-        membership_details = await utils.get_membership_by_username(nickname)
+        const membershipDetails = await utils.getMembershipByUsername(nickname)
 		
-		interaction.editReply(`Membership ID: ${membership_details[0].membershipId}\nMembership Type: ${membership_details[0].membershipType}`);
+		interaction.editReply(`Membership ID: ${membershipDetails[0].membershipId}\nMembership Type: ${membershipDetails[0].membershipType}`);
 	},
 };

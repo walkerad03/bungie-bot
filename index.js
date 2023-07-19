@@ -32,16 +32,16 @@ for (const file of commandFiles) {
     }
 }
 
-async function set_activities() {
+async function setActivities() {
     const guild = client.guilds.cache.get(guildId);
     guild.members.cache.each(member => {
         const nickname = member.nickname ?? member.user.username;
-        const regex_pattern = /^[^#]+#\d+$/;
+        const regexPattern = /^[^#]+#\d+$/;
         if (nickname === "shy#8600") {
             
         }
-        else if (regex_pattern.test(nickname)) {
-            utils.get_latest_activity(member);
+        else if (regexPattern.test(nickname)) {
+            utils.getLatestActivity(member);
             role_refresh(member);
         }
     });
@@ -52,9 +52,9 @@ async function set_activities() {
 client.once(Events.ClientReady, c => {
 	logger.logInfo(`Ready! Logged in as ${c.user.tag}`);
 
-    set_activities();
+    setActivities();
 
-    setInterval(set_activities, 30 * 60 * 1000);
+    setInterval(setActivities, 30 * 60 * 1000);
 });
 
 client.on(Events.InteractionCreate, async interaction => {

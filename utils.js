@@ -3,32 +3,30 @@ const discord_module = require('./modules/discord');
 const destiny = require('./modules/destiny');
 
 module.exports = {
-    get_latest_activity: async function (member) {
+    getLatestActivity: async function (member) {
         const username = member.nickname ?? member.user.username;
         try {
-            const mem_details = await this.get_membership_by_username(username);
+            const membershipDetails = await this.getMembershipByUsername(username);
 
-            const membership_type = mem_details[0].membershipType;
-            const membership_id = mem_details[0].membershipId;
+            const membershipType = membershipDetails[0].membershipType;
+            const membershipId = membershipDetails[0].membershipId;
+            
+            const data = await destiny.getProfile(membershipType, membershipId, [100]);
 
-            const data = await destiny.api_get(
-                `/Platform/Destiny2/${membership_type}/Profile/${membership_id}/?components=100`,
-            );
-
-            const date_last_played = new Date(data.profile.data.dateLastPlayed);
-            var current_date = new Date()
-            const time_since_played = (current_date - date_last_played) / (1000 * 86400);
-            if (time_since_played < 7) {
-                discord_module.set_role(member, "Active");
+            const dateLastPlayed = new Date(data.profile.data.dateLastPlayed);
+            var currentDate = new Date()
+            const TimeSincePlayedDays = (currentDate - dateLastPlayed) / (1000 * 86400);
+            if (TimeSincePlayedDays < 7) {
+                discord_module.setRole(member, "Active");
             } else {
-                discord_module.remove_role(member, "Active");
+                discord_module.removeRole(member, "Active");
             }
         } catch (error) {
             logger.logWarn(`Failed time check for ${username}`);
         }
     },
 
-    get_membership_by_username: async function (username) {
+    getMembershipByUsername: async function (username) {
         var data = [];
 
         let foundMembershipDetails = false;
@@ -64,14 +62,12 @@ module.exports = {
         }
     },
 
-    get_completed_lowman_raids_by_character: async function (membership_type, membership_id, character_id) {
+    getCompletedLowmanRaidsByCharacter: async function (membership_type, membership_id, character_id) {
         var data = [];
         var page = 0;
 
         while (true) {
-            var res = await destiny.api_get(
-                `/Platform/Destiny2/${membership_type}/Account/${membership_id}/Character/${character_id}/Stats/Activities/?page=${page}&mode=raid&count=250`
-            );
+            var res = await destiny.getActivityHistory(character_id, membership_id, membership_type, "250", "raid", page);
 
             if (!("activities" in res)) { return data; }
 
@@ -80,7 +76,7 @@ module.exports = {
                 if (activity.values.playerCount.basic.value <= 3 && activity.values.completed.basic.value == 1) {
 
                     const directorActivityHash = activity.activityDetails.directorActivityHash;
-                    const activity_definition_res = await destiny.get_activity_definition(directorActivityHash);
+                    const activity_definition_res = await destiny.getActivityDefinition(directorActivityHash);
 
                     data.push({
                         name: activity_definition_res.displayProperties.name,
@@ -94,13 +90,12 @@ module.exports = {
         }
     },
 
-    get_characters_by_membership: async function (membership_type, membership_id) {
-        const chars_res = await destiny.get_profile(membership_type, membership_id);
+    getCharactersByMembership: async function (membership_type, membership_id) {
+        const chars_res = await destiny.getAccountStats(membership_type, membership_id);
 
         var characters = []
         for (const char of chars_res.characters) {
             characters.push(char.characterId);
-            //logger.logInfo(`Found character ${char.characterId}`);
         }
 
         return characters;

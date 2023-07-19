@@ -1,7 +1,7 @@
 const logger = require('../logger');
 
 module.exports = {
-    set_role: async function (member, role_name) {
+    setRole: async function (member, role_name) {
         const role = member.guild.roles.cache.find((r) => r.name === role_name);
 
         if (!role) {
@@ -22,7 +22,7 @@ module.exports = {
         }
     },
 
-    remove_role: async function (member, role_name) {
+    removeRole: async function (member, role_name) {
         const role = member.guild.roles.cache.find((r) => r.name === role_name);
 
         if (!role) {
