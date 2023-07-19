@@ -1,2 +1,5 @@
 config.json
 todo.txt
+node_modules/*
+deploy-commands.json
+.eslintrc.json
