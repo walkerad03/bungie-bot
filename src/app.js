@@ -2,10 +2,10 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { token, guildId } = require('./config.json');
-const logger = require('./modules/logger');
-const utils = require('./utils.js');
-const { role_refresh } = require('./modules/destiny/role_refresh');
+const { token, guildId } = require('../config.json');
+const logger = require('../modules/logger');
+const utils = require('../utils.js');
+const { role_refresh } = require('../modules/destiny/role_refresh');
 
 // Create a new client instance
 const client = new Client({
