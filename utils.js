@@ -34,13 +34,9 @@ module.exports = {
         let foundMembershipDetails = false;
         let page = 0;
         const [displayName, bungieGlobalDisplayNameCode] = username.split('#');
-        const json_data = { "displayNamePrefix": displayName };
 
         try {
-            let res = await destiny.api_post(
-                `/Platform/User/Search/GlobalName/${page}/`,
-                json_data
-            );
+            let res = await destiny.searchGlobalName(displayName, page);
 
             while (!foundMembershipDetails && res !== undefined) {
                 for (const result of res.searchResults) {
@@ -59,10 +55,7 @@ module.exports = {
                 }
 
                 page += 1;
-                res = await destiny.api_post(
-                    `/Platform/User/Search/GlobalName/${page}/`,
-                    json_data
-                );
+                res = await destiny.searchGlobalName(displayName, page);
             }
         }
 

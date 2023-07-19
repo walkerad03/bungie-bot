@@ -51,12 +51,27 @@ module.exports = {
         if (!typeof membership_type === "string") {
             logger.logError(`membership_type is not a string (${membership_type})`);
             return;
-        } else if (!typeof membership_id === "string") {
+        }
+        if (!typeof membership_id === "string") {
             logger.logError(`membership_id is not a string (${membership_id})`);
             return;
-        } else {
-            const response = this.api_get(`/Platform/Destiny2/${membership_type}/Account/${membership_id}/Stats/`);
-            return response;
+        } 
+        return await this.api_get(`/Platform/Destiny2/${membership_type}/Account/${membership_id}/Stats/`);
+    },
+
+    searchGlobalName: async function (displayName, page) {
+        if (!typeof displayName === "string") {
+            logger.logError(`display name must be a string (${displayName})`);
+            return;
+        } 
+        if (!typeof page === "string") {
+            logger.logError(`page must be a string (${page})`);
+            return;
         }
-    }
+        const json_data = { "displayNamePrefix": displayName };
+        return await this.api_post(
+            `/Platform/User/Search/GlobalName/${page}/`,
+            json_data
+        );
+    },
 }
