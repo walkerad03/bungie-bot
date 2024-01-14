@@ -29,7 +29,7 @@ module.exports = {
 
     const lowmans = [];
 
-    for (idx in chars) {
+    for (let idx = 0; idx < chars.length; idx++) {
       const lowmansForChar = await utils.getCompletedLowmanRaidsByCharacter(membershipType, membershipId, chars[idx]);
 
       lowmans.push(lowmansForChar);
@@ -37,7 +37,7 @@ module.exports = {
 
     const completionCounts = {};
 
-    for (i in lowmans) {
+    for (let i = 0; i < lowmans.length; i++) {
       for (const raid of lowmans[i]) {
         if (`${raid.fireteamSize}_${raid.name}` in completionCounts) {
           completionCounts[`${raid.fireteamSize}_${raid.name}`] ++;
@@ -49,7 +49,9 @@ module.exports = {
 
     let str = '';
     for (const key in completionCounts) {
-      str += key + ': ' + completionCounts[key] + '\n';
+      if (completionCounts.hasOwnProperty(key)) {
+        str += key + ': ' + completionCounts[key] + '\n';
+      }
     }
 
     _checkExists(str, '3_Last Wish', member, 'Trio LW');
@@ -73,6 +75,9 @@ module.exports = {
     _checkExists(str, '3_Root of Nightmares: Master', member, 'Trio RoN: Master');
     _checkExists(str, '2_Root of Nightmares: Master', member, 'Duo RoN: Master');
     _checkExists(str, '1_Root of Nightmares: Master', member, 'Solo RoN: Master');
+
+    // Solo Dungeon Clears
+    _checkExists(str, '1_Prophecy: Normal', member, "Solo Prophecy");
   },
 };
 
